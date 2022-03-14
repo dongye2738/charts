@@ -1,10 +1,13 @@
+<!--- app-name: Redis&trade; Cluster -->
 
-# Redis&trade; Cluster Chart packaged by Bitnami
+# Redis(TM) Cluster packaged by Bitnami
 
-[Redis&trade;](http://redis.io/) is an advanced key-value cache and store. It is often referred to as a data structure server since keys can contain strings, hashes, lists, sets, sorted sets, bitmaps and hyperloglogs.
+Redis(TM) is an open source, scalable, distributed in-memory cache for applications. It can be used to store and serve data in the form of strings, hashes, lists, sets and sorted sets.
 
-Disclaimer: REDIS® is a registered trademark of Redis Labs Ltd.Any rights therein are reserved to Redis Labs Ltd. Any use by Bitnami is for referential purposes only and does not indicate any sponsorship, endorsement, or affiliation between Redis Labs Ltd.
+[Overview of Redis&trade; Cluster](http://redis.io)
 
+Disclaimer: Redis is a registered trademark of Redis Labs Ltd. Any rights therein are reserved to Redis Labs Ltd. Any use by Bitnami is for referential purposes only and does not indicate any sponsorship, endorsement, or affiliation between Redis Labs Ltd.
+                           
 ## TL;DR
 
 ```bash
@@ -14,7 +17,7 @@ $ helm install my-release bitnami/redis-cluster
 
 ## Introduction
 
-This chart bootstraps a [Redis&trade;](https://github.com/bitnami/bitnami-docker-redis) deployment on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
+This chart bootstraps a [Redis&trade;](https://github.com/bitnami/bitnami-docker-redis) deployment on a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
 
 Bitnami charts can be used with [Kubeapps](https://kubeapps.com/) for deployment and management of Helm Charts in clusters. This chart has been tested to work with NGINX Ingress, cert-manager, fluentd and Prometheus on top of the [BKPR](https://kubeprod.io/).
 
@@ -32,8 +35,8 @@ The main features of each chart are the following:
 
 ## Prerequisites
 
-- Kubernetes 1.12+
-- Helm 3.1.0
+- Kubernetes 1.19+
+- Helm 3.2.0+
 - PV provisioner support in the underlying infrastructure
 
 ## Installing the Chart
@@ -97,7 +100,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
 | `image.registry`                              | Redis&trade; cluster image registry                                                                                                                 | `docker.io`             |
 | `image.repository`                            | Redis&trade; cluster image repository                                                                                                               | `bitnami/redis-cluster` |
-| `image.tag`                                   | Redis&trade; cluster image tag (immutable tags are recommended)                                                                                     | `6.2.6-debian-10-r21`   |
+| `image.tag`                                   | Redis&trade; cluster image tag (immutable tags are recommended)                                                                                     | `6.2.6-debian-10-r137`  |
 | `image.pullPolicy`                            | Redis&trade; cluster image pull policy                                                                                                              | `IfNotPresent`          |
 | `image.pullSecrets`                           | Specify docker-registry secret names as an array                                                                                                    | `[]`                    |
 | `image.debug`                                 | Enable image debug mode                                                                                                                             | `false`                 |
@@ -145,7 +148,6 @@ The command removes all the Kubernetes components associated with the chart and 
 | `service.loadBalancerIP`                      | Load balancer IP if `service.type` is `LoadBalancer`                                                                                                | `""`                    |
 | `service.loadBalancerSourceRanges`            | Service Load Balancer sources                                                                                                                       | `[]`                    |
 | `service.externalTrafficPolicy`               | Service external traffic policy                                                                                                                     | `Cluster`               |
-| `persistence.enabled`                         | Use a PVC to persist data.                                                                                                                          | `true`                  |
 | `persistence.path`                            | Path to mount the volume at, to use other images Redis&trade; images.                                                                               | `/bitnami/redis/data`   |
 | `persistence.subPath`                         | The subdirectory of the volume to mount to, useful in dev environments and one PV for multiple services                                             | `""`                    |
 | `persistence.storageClass`                    | Storage class of backing PVC                                                                                                                        | `""`                    |
@@ -157,7 +159,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `volumePermissions.enabled`                   | Enable init container that changes volume permissions in the registry (for cases where the default k8s `runAsUser` and `fsUser` values do not work) | `false`                 |
 | `volumePermissions.image.registry`            | Init container volume-permissions image registry                                                                                                    | `docker.io`             |
 | `volumePermissions.image.repository`          | Init container volume-permissions image repository                                                                                                  | `bitnami/bitnami-shell` |
-| `volumePermissions.image.tag`                 | Init container volume-permissions image tag                                                                                                         | `10-debian-10-r233`     |
+| `volumePermissions.image.tag`                 | Init container volume-permissions image tag                                                                                                         | `10-debian-10-r346`     |
 | `volumePermissions.image.pullPolicy`          | Init container volume-permissions image pull policy                                                                                                 | `IfNotPresent`          |
 | `volumePermissions.image.pullSecrets`         | Specify docker-registry secret names as an array                                                                                                    | `[]`                    |
 | `volumePermissions.resources.limits`          | The resources limits for the container                                                                                                              | `{}`                    |
@@ -276,37 +278,38 @@ The command removes all the Kubernetes components associated with the chart and 
 
 ### Metrics sidecar parameters
 
-| Name                                       | Description                                                                                                              | Value                    |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------ |
-| `metrics.enabled`                          | Start a side-car prometheus exporter                                                                                     | `false`                  |
-| `metrics.image.registry`                   | Redis&trade; exporter image registry                                                                                     | `docker.io`              |
-| `metrics.image.repository`                 | Redis&trade; exporter image name                                                                                         | `bitnami/redis-exporter` |
-| `metrics.image.tag`                        | Redis&trade; exporter image tag                                                                                          | `1.29.0-debian-10-r6`    |
-| `metrics.image.pullPolicy`                 | Redis&trade; exporter image pull policy                                                                                  | `IfNotPresent`           |
-| `metrics.image.pullSecrets`                | Specify docker-registry secret names as an array                                                                         | `[]`                     |
-| `metrics.resources`                        | Metrics exporter resource requests and limits                                                                            | `{}`                     |
-| `metrics.extraArgs`                        | Extra arguments for the binary; possible values [here](https://github.com/oliver006/redis_exporter                       | `{}`                     |
-| `metrics.podAnnotations`                   | Additional annotations for Metrics exporter pod                                                                          | `{}`                     |
-| `metrics.podLabels`                        | Additional labels for Metrics exporter pod                                                                               | `{}`                     |
-| `metrics.serviceMonitor.enabled`           | If `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)                   | `false`                  |
-| `metrics.serviceMonitor.namespace`         | Optional namespace which Prometheus is running in                                                                        | `""`                     |
-| `metrics.serviceMonitor.interval`          | How frequently to scrape metrics (use by default, falling back to Prometheus' default)                                   | `""`                     |
-| `metrics.serviceMonitor.scrapeTimeout`     | Timeout after which the scrape is ended                                                                                  | `""`                     |
-| `metrics.serviceMonitor.selector`          | Prometheus instance selector labels                                                                                      | `{}`                     |
-| `metrics.serviceMonitor.labels`            | ServiceMonitor extra labels                                                                                              | `{}`                     |
-| `metrics.serviceMonitor.annotations`       | ServiceMonitor annotations                                                                                               | `{}`                     |
-| `metrics.serviceMonitor.jobLabel`          | The name of the label on the target service to use as the job name in prometheus.                                        | `""`                     |
-| `metrics.serviceMonitor.relabelings`       | RelabelConfigs to apply to samples before scraping                                                                       | `[]`                     |
-| `metrics.serviceMonitor.metricRelabelings` | MetricRelabelConfigs to apply to samples before ingestion                                                                | `[]`                     |
-| `metrics.prometheusRule.enabled`           | Set this to true to create prometheusRules for Prometheus operator                                                       | `false`                  |
-| `metrics.prometheusRule.additionalLabels`  | Additional labels that can be used so prometheusRules will be discovered by Prometheus                                   | `{}`                     |
-| `metrics.prometheusRule.namespace`         | namespace where prometheusRules resource should be created                                                               | `""`                     |
-| `metrics.prometheusRule.rules`             | (https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) to be created, check values for an example. | `[]`                     |
-| `metrics.priorityClassName`                | Metrics exporter pod priorityClassName                                                                                   | `""`                     |
-| `metrics.service.type`                     | Kubernetes Service type (redis metrics)                                                                                  | `ClusterIP`              |
-| `metrics.service.loadBalancerIP`           | Use serviceLoadBalancerIP to request a specific static IP, otherwise leave blank                                         | `""`                     |
-| `metrics.service.annotations`              | Annotations for the services to monitor.                                                                                 | `{}`                     |
-| `metrics.service.labels`                   | Additional labels for the metrics service                                                                                | `{}`                     |
+| Name                                       | Description                                                                                                                        | Value                    |
+| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| `metrics.enabled`                          | Start a side-car prometheus exporter                                                                                               | `false`                  |
+| `metrics.image.registry`                   | Redis&trade; exporter image registry                                                                                               | `docker.io`              |
+| `metrics.image.repository`                 | Redis&trade; exporter image name                                                                                                   | `bitnami/redis-exporter` |
+| `metrics.image.tag`                        | Redis&trade; exporter image tag                                                                                                    | `1.35.1-debian-10-r7`    |
+| `metrics.image.pullPolicy`                 | Redis&trade; exporter image pull policy                                                                                            | `IfNotPresent`           |
+| `metrics.image.pullSecrets`                | Specify docker-registry secret names as an array                                                                                   | `[]`                     |
+| `metrics.resources`                        | Metrics exporter resource requests and limits                                                                                      | `{}`                     |
+| `metrics.extraArgs`                        | Extra arguments for the binary; possible values [here](https://github.com/oliver006/redis_exporter                                 | `{}`                     |
+| `metrics.podAnnotations`                   | Additional annotations for Metrics exporter pod                                                                                    | `{}`                     |
+| `metrics.podLabels`                        | Additional labels for Metrics exporter pod                                                                                         | `{}`                     |
+| `metrics.serviceMonitor.enabled`           | If `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)                             | `false`                  |
+| `metrics.serviceMonitor.namespace`         | Optional namespace which Prometheus is running in                                                                                  | `""`                     |
+| `metrics.serviceMonitor.interval`          | How frequently to scrape metrics (use by default, falling back to Prometheus' default)                                             | `""`                     |
+| `metrics.serviceMonitor.scrapeTimeout`     | Timeout after which the scrape is ended                                                                                            | `""`                     |
+| `metrics.serviceMonitor.selector`          | Prometheus instance selector labels                                                                                                | `{}`                     |
+| `metrics.serviceMonitor.labels`            | ServiceMonitor extra labels                                                                                                        | `{}`                     |
+| `metrics.serviceMonitor.annotations`       | ServiceMonitor annotations                                                                                                         | `{}`                     |
+| `metrics.serviceMonitor.jobLabel`          | The name of the label on the target service to use as the job name in prometheus.                                                  | `""`                     |
+| `metrics.serviceMonitor.relabelings`       | RelabelConfigs to apply to samples before scraping                                                                                 | `[]`                     |
+| `metrics.serviceMonitor.metricRelabelings` | MetricRelabelConfigs to apply to samples before ingestion                                                                          | `[]`                     |
+| `metrics.prometheusRule.enabled`           | Set this to true to create prometheusRules for Prometheus operator                                                                 | `false`                  |
+| `metrics.prometheusRule.additionalLabels`  | Additional labels that can be used so prometheusRules will be discovered by Prometheus                                             | `{}`                     |
+| `metrics.prometheusRule.namespace`         | namespace where prometheusRules resource should be created                                                                         | `""`                     |
+| `metrics.prometheusRule.rules`             | Create specified [rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/), check values for an example. | `[]`                     |
+| `metrics.priorityClassName`                | Metrics exporter pod priorityClassName                                                                                             | `""`                     |
+| `metrics.service.type`                     | Kubernetes Service type (redis metrics)                                                                                            | `ClusterIP`              |
+| `metrics.service.loadBalancerIP`           | Use serviceLoadBalancerIP to request a specific static IP, otherwise leave blank                                                   | `""`                     |
+| `metrics.service.annotations`              | Annotations for the services to monitor.                                                                                           | `{}`                     |
+| `metrics.service.labels`                   | Additional labels for the metrics service                                                                                          | `{}`                     |
+| `metrics.service.clusterIP`                | Service Cluster IP                                                                                                                 | `""`                     |
 
 
 ### Sysctl Image parameters
@@ -317,7 +320,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `sysctlImage.command`            | sysctlImage command to execute                     | `[]`                    |
 | `sysctlImage.registry`           | sysctlImage Init container registry                | `docker.io`             |
 | `sysctlImage.repository`         | sysctlImage Init container repository              | `bitnami/bitnami-shell` |
-| `sysctlImage.tag`                | sysctlImage Init container tag                     | `10-debian-10-r233`     |
+| `sysctlImage.tag`                | sysctlImage Init container tag                     | `10-debian-10-r346`     |
 | `sysctlImage.pullPolicy`         | sysctlImage Init container pull policy             | `IfNotPresent`          |
 | `sysctlImage.pullSecrets`        | Specify docker-registry secret names as an array   | `[]`                    |
 | `sysctlImage.mountHostSys`       | Mount the host `/sys` folder to `/host-sys`        | `false`                 |
@@ -345,7 +348,7 @@ $ helm install my-release -f values.yaml bitnami/redis-cluster
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
 
-> **Note for minikube users**: Current versions of minikube (v0.24.1 at the time of writing) provision `hostPath` persistent volumes that are only writable by root. Using chart defaults cause pod failure for the Redis&trade; pod as it attempts to write to the `/bitnami` directory. Consider installing Redis&trade; with `--set persistence.enabled=false`. See minikube issue [1990](https://github.com/kubernetes/minikube/issues/1990) for more information.
+> **Note for minikube users**: Current versions of minikube (v0.24.1 at the time of writing) provision `hostPath` persistent volumes that are only writable by root. Using chart defaults cause pod failure for the Redis&trade; pod as it attempts to write to the `/bitnami` directory. See minikube issue [1990](https://github.com/kubernetes/minikube/issues/1990) for more information.
 
 ## Configuration and installation details
 
@@ -421,7 +424,9 @@ Note we are providing the new IPs at `cluster.update.newExternalIPs`, the flag `
 
 #### Scale down the cluster
 
-To scale down the redis cluster just perform a normal upgrade setting the `cluster.nodes` value to the desired number of nodes. It should not be less than `6`. Also it is needed to provide the password using the `password`. For example, having more than 6 nodes, to scale down the cluster to 6 nodes:
+To scale down the Redis&trade; Cluster, follow these steps:
+
+First perform a normal upgrade setting the `cluster.nodes` value to the desired number of nodes. It should not be less than `6`. Also it is needed to provide the password using the `password`. For example, having more than 6 nodes, to scale down the cluster to 6 nodes:
 
 ```
 helm upgrade --timeout 600s <release> --set "password=${REDIS_PASSWORD},cluster.nodes=6" .
@@ -430,6 +435,30 @@ helm upgrade --timeout 600s <release> --set "password=${REDIS_PASSWORD},cluster.
 The cluster will continue working during the update as long as the quorum is not lost.
 
 > NOTE: To avoid the creation of the Job that initializes the Redis&trade; Cluster again, you will need to provide `cluster.init=false`.
+
+Once all the nodes are ready, get the list of nodes in the cluster using the `CLUSTER NODES` command. You will see references to the ones that were removed. Write down the node IDs of the nodes that show `fail`. In the following example the cluster scaled down from 8 to 6 nodes.
+
+```
+redis-cli -a $REDIS_PASSWORD CLUSTER NODES
+
+...
+b23bcffa1fd64368d445c1d9bd9aeb92641105f7 10.0.0.70:6379@16379 slave,fail - 1645633139060 0 0 connected
+...
+d123b31560d4a32eabb10f1bf5e85e6f8f1d8b2a 10.0.0.23:6379@16379 slave,fail
+```
+
+In each cluster node, execute the following command. Replace the NODE_ID placeholder.
+
+```
+redis-cli -a $REDIS_PASSWORD CLUSTER FORGET NODE_ID
+```
+
+In the previous example the commands would look like this in each cluster node:
+
+```
+redis-cli -a $REDIS_PASSWORD CLUSTER FORGET b23bcffa1fd64368d445c1d9bd9aeb92641105f7
+redis-cli -a $REDIS_PASSWORD CLUSTER FORGET d123b31560d4a32eabb10f1bf5e85e6f8f1d8b2a
+```
 
 ### Using password file
 To use a password file for Redis&trade; you need to create a secret containing the password.
@@ -583,7 +612,7 @@ As an alternative, you can use of the preset configurations for pod affinity, po
 
 ## Troubleshooting
 
-Find more information about how to deal with common errors related to Bitnami’s Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
+Find more information about how to deal with common errors related to Bitnami's Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
 
 ## Upgrading
 
@@ -638,3 +667,19 @@ This version of the chart adapts the chart to the most recent Bitnami best pract
 ### To 2.0.0
 
 The version `1.0.0` was using a label in the Statefulset's volumeClaimTemplate that didn't allow to upgrade the chart. The version `2.0.0` fixed that issue. Also it adds more docs in the README.md.
+
+## License
+
+Copyright &copy; 2022 Bitnami
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.

@@ -18,7 +18,6 @@ metadata:
     {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
     {{- end }}
 spec:
-  ttlSecondsAfterFinished: 0
   template:
     metadata:
       labels: {{- include "common.labels.standard" . | nindent 8 }}
@@ -50,6 +49,7 @@ spec:
             - --overwrite
             - --secrets-format=compact
             - --namespace=$(CONTOUR_NAMESPACE)
+            - --certificate-lifetime={{ .Values.contour.certgen.certificateLifetime }}
           env:
             - name: CONTOUR_NAMESPACE
               valueFrom:

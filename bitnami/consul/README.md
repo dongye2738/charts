@@ -1,7 +1,13 @@
-# HashiCorp Consul Helm Chart
+<!--- app-name: HashiCorp Consul -->
 
-[HashiCorp Consul](https://www.consul.io/) has multiple components, but as a whole, it is a tool for discovering and configuring services in your infrastructure
+# HashiCorp Consul packaged by Bitnami
 
+HashiCorp Consul is a tool for discovering and configuring services in your infrastructure.
+
+[Overview of HashiCorp Consul](https://consul.io)
+
+Trademarks: This software listing is packaged by Bitnami. The respective trademarks mentioned in the offering are owned by the respective companies, and use of them does not imply any affiliation or endorsement.
+                           
 ## TL;DR
 
 ```console
@@ -11,14 +17,14 @@ $ helm install my-release bitnami/consul
 
 ## Introduction
 
-This chart bootstraps a [HashiCorp Consul](https://github.com/bitnami/bitnami-docker-consul) deployment on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
+This chart bootstraps a [HashiCorp Consul](https://github.com/bitnami/bitnami-docker-consul) deployment on a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
 
 Bitnami charts can be used with [Kubeapps](https://kubeapps.com/) for deployment and management of Helm Charts in clusters. This Helm chart has been tested on top of [Bitnami Kubernetes Production Runtime](https://kubeprod.io/) (BKPR). Deploy BKPR to get automated TLS certificates, logging and monitoring for your applications.
 
 ## Prerequisites
 
-- Kubernetes 1.12+
-- Helm 3.1.0
+- Kubernetes 1.19+
+- Helm 3.2.0+
 - PV provisioner support in the underlying infrastructure
 
 ## Installing the Chart
@@ -80,7 +86,7 @@ $ helm delete --purge my-release
 | --------------------------- | -------------------------------------------------------------------------------------------- | --------------------- |
 | `image.registry`            | HashiCorp Consul image registry                                                              | `docker.io`           |
 | `image.repository`          | HashiCorp Consul image repository                                                            | `bitnami/consul`      |
-| `image.tag`                 | HashiCorp Consul image tag (immutable tags are recommended)                                  | `1.10.4-debian-10-r0` |
+| `image.tag`                 | HashiCorp Consul image tag (immutable tags are recommended)                                  | `1.11.2-debian-10-r0` |
 | `image.pullPolicy`          | HashiCorp Consul image pull policy                                                           | `IfNotPresent`        |
 | `image.pullSecrets`         | HashiCorp Consul image pull secrets                                                          | `[]`                  |
 | `image.debug`               | Enable image debug mode                                                                      | `false`               |
@@ -207,7 +213,7 @@ $ helm delete --purge my-release
 | `volumePermissions.enabled`            | Enable init container that changes the owner and group of the persistent volume | `false`                 |
 | `volumePermissions.image.registry`     | Bitnami Shell image registry                                                    | `docker.io`             |
 | `volumePermissions.image.repository`   | Bitnami Shell image repository                                                  | `bitnami/bitnami-shell` |
-| `volumePermissions.image.tag`          | Bitnami Shell image tag (immutable tags are recommended)                        | `10-debian-10-r249`     |
+| `volumePermissions.image.tag`          | Bitnami Shell image tag (immutable tags are recommended)                        | `10-debian-10-r307`     |
 | `volumePermissions.image.pullPolicy`   | Bitnami Shell image pull policy                                                 | `IfNotPresent`          |
 | `volumePermissions.image.pullSecrets`  | Bitnami Shell image pull secrets                                                | `[]`                    |
 | `volumePermissions.resources.limits`   | The resources limits for the container                                          | `{}`                    |
@@ -221,7 +227,7 @@ $ helm delete --purge my-release
 | `metrics.enabled`                          | Start a side-car prometheus exporter                                                                                        | `false`                   |
 | `metrics.image.registry`                   | HashiCorp Consul Prometheus Exporter image registry                                                                         | `docker.io`               |
 | `metrics.image.repository`                 | HashiCorp Consul Prometheus Exporter image repository                                                                       | `bitnami/consul-exporter` |
-| `metrics.image.tag`                        | HashiCorp Consul Prometheus Exporter image tag (immutable tags are recommended)                                             | `0.7.1-debian-10-r448`    |
+| `metrics.image.tag`                        | HashiCorp Consul Prometheus Exporter image tag (immutable tags are recommended)                                             | `0.7.1-debian-10-r508`    |
 | `metrics.image.pullPolicy`                 | HashiCorp Consul Prometheus Exporter image pull policy                                                                      | `IfNotPresent`            |
 | `metrics.image.pullSecrets`                | HashiCorp Consul Prometheus Exporter image pull secrets                                                                     | `[]`                      |
 | `metrics.service.type`                     | Kubernetes Service type                                                                                                     | `ClusterIP`               |
@@ -410,7 +416,7 @@ You can enable this initContainer by setting `volumePermissions.enabled` to `tru
 
 ## Troubleshooting
 
-Find more information about how to deal with common errors related to Bitnami’s Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
+Find more information about how to deal with common errors related to Bitnami's Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
 
 ## Upgrading
 
@@ -493,3 +499,19 @@ Use the workaround below to upgrade from versions previous to 2.0.0. The followi
 ```console
 $ kubectl delete statefulset consul --cascade=false
 ```
+
+## License
+
+Copyright &copy; 2022 Bitnami
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.

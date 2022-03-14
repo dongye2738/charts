@@ -22,17 +22,6 @@ Return the proper Docker Image Registry Secret Names
 {{- end -}}
 
 {{/*
-Return the appropriate apiVersion for networkpolicy
-*/}}
-{{- define "networkPolicy.apiVersion" -}}
-{{- if semverCompare ">=1.4-0, <1.7-0" .Capabilities.KubeVersion.GitVersion -}}
-{{- print "extensions/v1beta1" -}}
-{{- else -}}
-{{- print "networking.k8s.io/v1" -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
 Return the proper etcd peer protocol
 */}}
 {{- define "etcd.peerProtocol" -}}
@@ -62,7 +51,7 @@ Return the proper etcdctl authentication options
 {{- $certsOption := " --cert $ETCD_CERT_FILE --key $ETCD_KEY_FILE" -}}
 {{- $autoCertsOption := " --cert /bitnami/etcd/data/fixtures/client/cert.pem --key /bitnami/etcd/data/fixtures/client/key.pem" -}}
 {{- $caOption := " --cacert $ETCD_TRUSTED_CA_FILE" -}}
-{{- if .Values.auth.rbac.enabled -}}
+{{- if or .Values.auth.rbac.create .Values.auth.rbac.enabled -}}
     {{- printf "%s" $rbacOption -}}
 {{- end -}}
 {{- if and .Values.auth.client.secureTransport .Values.auth.client.useAutoTLS -}}

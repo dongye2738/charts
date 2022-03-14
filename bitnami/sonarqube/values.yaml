@@ -2,6 +2,7 @@
 ## Global Docker image parameters
 ## Please, note that this will override the image parameters, including dependencies, configured to use the global value
 ## Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass
+##
 
 ## @param global.imageRegistry Global Docker image registry
 ## @param global.imagePullSecrets Global Docker registry secret names as an array
@@ -17,6 +18,7 @@ global:
   storageClass: ""
 
 ## @section Common parameters
+##
 
 ## @param kubeVersion Override Kubernetes version
 ##
@@ -56,6 +58,7 @@ diagnosticMode:
     - infinity
 
 ## @section SonarQube Image parameters
+##
 
 ## Bitnami SonarQube image
 ## ref: https://hub.docker.com/r/bitnami/sonarqube/tags/
@@ -69,10 +72,10 @@ diagnosticMode:
 image:
   registry: docker.io
   repository: bitnami/sonarqube
-  tag: 9.1.0-debian-10-r41
+  tag: 9.3.0-debian-10-r27
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
-  ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
   ##
   pullPolicy: IfNotPresent
   ## Optionally specify an array of imagePullSecrets.
@@ -165,6 +168,7 @@ extraEnvVarsCM: ""
 extraEnvVarsSecret: ""
 
 ## @section SonarQube deployment parameters
+##
 
 ## @param replicaCount Number of SonarQube replicas to deploy
 ## NOTE: ReadWriteMany PVC(s) are required if replicaCount > 1
@@ -230,7 +234,7 @@ customReadinessProbe: {}
 ##
 customStartupProbe: {}
 ## SonarQube resource requests and limits
-## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+## ref: https://kubernetes.io/docs/user-guide/compute-resources/
 ## @param resources.limits The resources limits for the SonarQube containers
 ## @param resources.requests [object] The requested resources for the SonarQube containers
 ##
@@ -354,6 +358,7 @@ sidecars: {}
 initContainers: {}
 
 ## @section Traffic Exposure Parameters
+##
 
 ## SonarQube service parameters
 ##
@@ -392,7 +397,7 @@ service:
   ##
   loadBalancerSourceRanges: []
   ## @param service.externalTrafficPolicy SonarQube service external traffic policy
-  ## ref http://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  ## ref https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
   ##
   externalTrafficPolicy: Cluster
   ## @param service.annotations Additional custom annotations for SonarQube service
@@ -402,7 +407,7 @@ service:
   ##
   extraPorts: []
 ## SonarQube ingress parameters
-## ref: http://kubernetes.io/docs/user-guide/ingress/
+## ref: https://kubernetes.io/docs/user-guide/ingress/
 ##
 ingress:
   ## @param ingress.enabled Enable ingress record generation for SonarQube
@@ -493,9 +498,10 @@ ingress:
   secrets: []
 
 ## @section Persistence Parameters
+##
 
 ## Persistence Parameters
-## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+## ref: https://kubernetes.io/docs/user-guide/persistent-volumes/
 ##
 persistence:
   ## @param persistence.enabled Enable persistence using Persistent Volume Claims
@@ -539,7 +545,7 @@ volumePermissions:
   image:
     registry: docker.io
     repository: bitnami/bitnami-shell
-    tag: 10-debian-10-r239
+    tag: 10-debian-10-r353
     pullPolicy: IfNotPresent
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
@@ -550,7 +556,7 @@ volumePermissions:
     ##
     pullSecrets: []
   ## Init container's resource requests and limits
-  ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
   ## @param volumePermissions.resources.limits The resources limits for the init container
   ## @param volumePermissions.resources.requests The requested resources for the init container
   ##
@@ -568,6 +574,7 @@ volumePermissions:
     runAsUser: 0
 
 ## @section Sysctl Image parameters
+##
 
 ## Kernel settings modifier image
 ##
@@ -586,7 +593,7 @@ sysctl:
   image:
     registry: docker.io
     repository: bitnami/bitnami-shell
-    tag: 10-debian-10-r239
+    tag: 10-debian-10-r353
     pullPolicy: IfNotPresent
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
@@ -597,7 +604,7 @@ sysctl:
     ##
     pullSecrets: []
   ## Init container's resource requests and limits
-  ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
   ## @param sysctl.resources.limits The resources limits for the init container
   ## @param sysctl.resources.requests The requested resources for the init container
   ##
@@ -606,6 +613,7 @@ sysctl:
     requests: {}
 
 ## @section Other Parameters
+##
 
 ## RBAC configuration
 ##
@@ -642,6 +650,7 @@ autoscaling:
   targetMemory: 50
 
 ## @section Metrics parameters
+##
 
 ## Prometheus Exporters / Metrics
 ##
@@ -663,7 +672,7 @@ metrics:
     image:
       registry: docker.io
       repository: bitnami/jmx-exporter
-      tag: 0.16.1-debian-10-r108
+      tag: 0.16.1-debian-10-r225
       pullPolicy: IfNotPresent
       ## Optionally specify an array of imagePullSecrets.
       ## Secrets must be manually created in the namespace.
@@ -678,7 +687,7 @@ metrics:
     containerPorts:
       metrics: 10445
     ## Prometheus JMX Exporter' resource requests and limits
-    ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+    ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
     ## @param metrics.jmx.resources.limits The resources limits for the init container
     ## @param metrics.jmx.resources.requests The requested resources for the init container
     ##
@@ -776,6 +785,7 @@ metrics:
     selector: {}
 
 ## @section PostgreSQL subchart settings
+##
 
 ## PostgreSQL chart configuration
 ## https://github.com/bitnami/charts/blob/master/bitnami/postgresql/values.yaml
@@ -787,27 +797,29 @@ postgresql:
   ## @param postgresql.nameOverride Override name of the PostgreSQL chart
   ##
   nameOverride: ""
-  ## @param postgresql.existingSecret Existing secret containing the password of the PostgreSQL chart
-  ##
-  existingSecret: ""
-  ## @param postgresql.postgresqlPassword Password for the postgres user of the PostgreSQL chart (auto-generated if not set)
-  ## ref: https://hub.docker.com/_/postgres/
-  ##
-  postgresqlPassword: ""
-  ## @param postgresql.postgresqlUsername Username to create when deploying the PostgreSQL chart
-  ##
-  postgresqlUsername: bn_sonarqube
-  ## @param postgresql.postgresqlDatabase Database to create when deploying the PostgreSQL chart
-  ##
-  postgresqlDatabase: bitnami_sonarqube
+  auth:
+    ## @param postgresql.auth.existingSecret Existing secret containing the password of the PostgreSQL chart
+    ##
+    existingSecret: ""
+    ## @param postgresql.auth.password Password for the postgres user of the PostgreSQL chart (auto-generated if not set)
+    ## ref: https://hub.docker.com/_/postgres/
+    ##
+    password: ""
+    ## @param postgresql.auth.username Username to create when deploying the PostgreSQL chart
+    ##
+    username: bn_sonarqube
+    ## @param postgresql.auth.database Database to create when deploying the PostgreSQL chart
+    ##
+    database: bitnami_sonarqube
   ## PostgreSQL service
   ##
   service:
-    ## @param postgresql.service.port PostgreSQL service port
+    ## @param postgresql.service.ports.postgresql PostgreSQL service port
     ##
-    port: 5432
+    ports:
+      postgresql: 5432
   ## Enable persistence using Persistent Volume Claims
-  ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+  ## ref: https://kubernetes.io/docs/user-guide/persistent-volumes/
   ##
   persistence:
     ## @param postgresql.persistence.enabled Use PVCs when deploying the PostgreSQL chart
@@ -833,6 +845,7 @@ postgresql:
     size: 8Gi
 
 ## @section External Database settings
+##
 
 ## External Database Configuration
 ## All of these values are only used when postgresql.enabled is set to false
@@ -848,7 +861,7 @@ externalDatabase:
   ##
   password: ""
   ## @param externalDatabase.existingSecret Secret containing the password of an external PostgreSQL instance to connect (only if postgresql.enabled=false)
-  ## Name of an existing secret resource containing the DB password in a 'postgresql-password' key
+  ## Name of an existing secret resource containing the DB password in a 'password' key
   ##
   existingSecret: ""
   ## @param externalDatabase.database Database inside an external PostgreSQL to connect (only if postgresql.enabled=false)

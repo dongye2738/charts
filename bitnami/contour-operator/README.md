@@ -1,6 +1,12 @@
-# Contour Operator
+<!--- app-name: Contour Operator -->
 
-[The Contour Operator](https://github.com/projectcontour/contour-operator/) extends the Kubernetes API to create, configure and manage instances of Contour on behalf of users.
+# Contour Operator packaged by Bitnami
+
+The Contour Operator extends the Kubernetes API to create, configure and manage instances of Contour on behalf of users.
+
+[Overview of Contour Operator](https://github.com/projectcontour/contour-operator)
+
+Trademarks: This software listing is packaged by Bitnami. The respective trademarks mentioned in the offering are owned by the respective companies, and use of them does not imply any affiliation or endorsement.
 
 ## TL;DR
 
@@ -13,14 +19,14 @@ $ helm install my-release bitnami/contour-operator
 
 Bitnami charts for Helm are carefully engineered, actively maintained and are the quickest and easiest way to deploy containers on a Kubernetes cluster that are ready to handle production workloads.
 
-This chart bootstraps a [Contour Operator](https://github.com/projectcontour/contour-operator/) Deployment in a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
+This chart bootstraps a [Contour Operator](https://github.com/projectcontour/contour-operator/) Deployment in a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
 
 Bitnami charts can be used with [Kubeapps](https://kubeapps.com/) for deployment and management of Helm Charts in clusters. This Helm chart has been tested on top of [Bitnami Kubernetes Production Runtime](https://kubeprod.io/) (BKPR). Deploy BKPR to get automated TLS certificates, logging and monitoring for your applications.
 
 ## Prerequisites
 
 - Kubernetes 1.19+
-- Helm 3.1.0
+- Helm 3.2.0+
 
 ## Installing the Chart
 
@@ -93,18 +99,17 @@ The operator will extend the Kubernetes API with the *Contour* object, among oth
   |                    |      |     RBAC      |
   |     Deployment     |      | Privileges    |
   +-------+------------+      +-------+-------+
-    │     ^                           |
-    │     |   +-----------------+     |
-    │     +---+ Service Account +<----+
-    │         +-----------------+
-    │
-    │
-    │
-    │
-    │    ┌───────────────────────────────────────────────────────────────────────┐
-    │    │                                                                       │
+    |     ^                           |
+    |     |   +-----------------+     |
+    |     +---+ Service Account +<----+
+    |         +-----------------+
+    |
+    |
+    |
+    |
+    |    +-----------------------------------------------------------------------+
     |    |                       +--------------+                +-------------+ |
-    |────►                       |              |                |             | |
+    |->  |                       |              |                |             | |
          |    Service            |   Contour    |                |    Envoy    | |
          |   <-------------------+              +<---------------+             | |
          |                       |  Deployment  |                |  DaemonSet  | |
@@ -112,12 +117,10 @@ The operator will extend the Kubernetes API with the *Contour* object, among oth
          |                       +-----------+--+                +-------------+ |
          |                                   ^                                   |
          |                                   |                +------------+     |
-         │                                   +----------------+ Configmaps |     |
-         │                                                    |  Secrets   |     |
-         │                                                    +------------+     |
-         │                                                                       │
-         │                                                                       │
-         └───────────────────────────────────────────────────────────────────────┘
+         |                                   +----------------+ Configmaps |     |
+         |                                                    |  Secrets   |     |
+         |                                                    +------------+     |
+         +-----------------------------------------------------------------------+
 
 ```
 
@@ -128,7 +131,7 @@ This solution allows to easily deploy multiple Contour instances compared to the
 ### Global parameters
 
 | Name                      | Description                                     | Value |
-| ------------------------- | ----------------------------------------------- | ----- |
+|:--------------------------|:------------------------------------------------|:------|
 | `global.imageRegistry`    | Global Docker image registry                    | `""`  |
 | `global.imagePullSecrets` | Global Docker registry secret names as an array | `[]`  |
 | `global.storageClass`     | Global StorageClass for Persistent Volume(s)    | `""`  |
@@ -137,7 +140,7 @@ This solution allows to easily deploy multiple Contour instances compared to the
 ### Common parameters
 
 | Name                | Description                                        | Value |
-| ------------------- | -------------------------------------------------- | ----- |
+|:--------------------|:---------------------------------------------------|:------|
 | `kubeVersion`       | Override Kubernetes version                        | `""`  |
 | `nameOverride`      | String to partially override common.names.fullname | `""`  |
 | `fullnameOverride`  | String to fully override common.names.fullname     | `""`  |
@@ -149,19 +152,19 @@ This solution allows to easily deploy multiple Contour instances compared to the
 ### Contour Operator Parameters
 
 | Name                                    | Description                                                                                                              | Value                      |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------- |
+|:----------------------------------------|:-------------------------------------------------------------------------------------------------------------------------|:---------------------------|
 | `image.registry`                        | Contour Operator image registry                                                                                          | `docker.io`                |
 | `image.repository`                      | Contour Operator image repository                                                                                        | `bitnami/contour-operator` |
-| `image.tag`                             | Contour Operator image tag (immutable tags are recommended)                                                              | `1.19.1-scratch-r0`        |
+| `image.tag`                             | Contour Operator image tag (immutable tags are recommended)                                                              | `1.19.1-scratch-r3`        |
 | `image.pullPolicy`                      | Contour Operator image pull policy                                                                                       | `IfNotPresent`             |
 | `image.pullSecrets`                     | Contour Operator image pull secrets                                                                                      | `[]`                       |
 | `contourImage.registry`                 | Contour Image registry                                                                                                   | `docker.io`                |
 | `contourImage.repository`               | Contour Image repository                                                                                                 | `bitnami/contour`          |
-| `contourImage.tag`                      | Contour Image tag (immutable tags are recommended)                                                                       | `1.19.1-debian-10-r6`      |
+| `contourImage.tag`                      | Contour Image tag (immutable tags are recommended)                                                                       | `1.19.1-debian-10-r63`     |
 | `contourImage.pullSecrets`              | Contour Image pull secrets                                                                                               | `[]`                       |
 | `envoyImage.registry`                   | Envoy Image registry                                                                                                     | `docker.io`                |
 | `envoyImage.repository`                 | Envoy Image repository                                                                                                   | `bitnami/envoy`            |
-| `envoyImage.tag`                        | Envoy Image tag (immutable tags are recommended)                                                                         | `1.19.1-debian-10-r81`     |
+| `envoyImage.tag`                        | Envoy Image tag (immutable tags are recommended)                                                                         | `1.19.1-debian-10-r136`    |
 | `envoyImage.pullSecrets`                | Envoy Image pull secrets                                                                                                 | `[]`                       |
 | `replicaCount`                          | Number of Contour Operator replicas to deploy                                                                            | `1`                        |
 | `livenessProbe.enabled`                 | Enable livenessProbe on Contour Operator nodes                                                                           | `true`                     |
@@ -224,7 +227,7 @@ This solution allows to easily deploy multiple Contour instances compared to the
 ### Other Parameters
 
 | Name                                          | Description                                          | Value  |
-| --------------------------------------------- | ---------------------------------------------------- | ------ |
+|:----------------------------------------------|:-----------------------------------------------------|:-------|
 | `rbac.create`                                 | Specifies whether RBAC resources should be created   | `true` |
 | `serviceAccount.create`                       | Specifies whether a ServiceAccount should be created | `true` |
 | `serviceAccount.name`                         | The name of the ServiceAccount to use.               | `""`   |
@@ -234,7 +237,7 @@ This solution allows to easily deploy multiple Contour instances compared to the
 ### Metrics parameters
 
 | Name                                       | Description                                                                      | Value       |
-| ------------------------------------------ | -------------------------------------------------------------------------------- | ----------- |
+|:-------------------------------------------|:---------------------------------------------------------------------------------|:------------|
 | `metrics.enabled`                          | Create a service for accessing the metrics endpoint                              | `false`     |
 | `metrics.service.type`                     | Contour Operator metrics service type                                            | `ClusterIP` |
 | `metrics.service.ports.http`               | Contour Operator metrics service HTTP port                                       | `80`        |
@@ -357,3 +360,19 @@ extraDeploy:
 ## Troubleshooting
 
 Find more information about how to deal with common errors related to Bitnami's Helm charts in [this troubleshooting guide](https://docs.bitnami.com/general/how-to/troubleshoot-helm-chart-issues).
+
+## License
+
+Copyright &copy; 2022 Bitnami
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.

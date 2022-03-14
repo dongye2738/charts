@@ -57,10 +57,10 @@ extraDeploy: []
 image:
   registry: docker.io
   repository: bitnami/aspnet-core
-  tag: 3.1.21-debian-10-r0
+  tag: 6.0.3-debian-10-r2
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
-  ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
   ##
   pullPolicy: IfNotPresent
   ## Optionally specify an array of imagePullSecrets.
@@ -216,7 +216,7 @@ nodeSelector: {}
 ##
 tolerations: []
 ## ASP.NET Core containers' resource requests and limits
-## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+## ref: https://kubernetes.io/docs/user-guide/compute-resources/
 ## We usually recommend not to specify default resources and to leave this as a conscious
 ## choice for the user. This also increases chances charts run on environments with little
 ## resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -367,10 +367,10 @@ appFromExternalRepo:
     image:
       registry: docker.io
       repository: bitnami/git
-      tag: 2.33.0-debian-10-r81
+      tag: 2.35.1-debian-10-r41
       ## Specify a imagePullPolicy
       ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
-      ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+      ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
       ##
       pullPolicy: IfNotPresent
       ## Optionally specify an array of imagePullSecrets.
@@ -407,10 +407,10 @@ appFromExternalRepo:
     image:
       registry: docker.io
       repository: bitnami/dotnet-sdk
-      tag: 3.1.414-debian-10-r26
+      tag: 6.0.201-debian-10-r1
       ## Specify a imagePullPolicy
       ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
-      ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+      ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
       ##
       pullPolicy: IfNotPresent
       ## Optionally specify an array of imagePullSecrets.
@@ -423,7 +423,7 @@ appFromExternalRepo:
       pullSecrets: []
     ## @param appFromExternalRepo.publish.subFolder Sub folder under the Git repository containing the ASP.NET Core app
     ##
-    subFolder: aspnetcore/fundamentals/servers/kestrel/samples/3.x/KestrelSample
+    subFolder: aspnetcore/fundamentals/servers/kestrel/samples/6.x/KestrelSample
     ## @param appFromExternalRepo.publish.extraFlags Extra flags to be appended to "dotnet publish" command
     ##
     extraFlags: []
@@ -479,14 +479,14 @@ service:
   ##
   loadBalancerSourceRanges: []
   ## @param service.externalTrafficPolicy ASP.NET Core service external traffic policy
-  ## ref http://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  ## ref https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
   ##
   externalTrafficPolicy: Cluster
   ## @param service.annotations Additional custom annotations for ASP.NET Core service
   ##
   annotations: {}
 ## Configure the ingress resource that allows you to access the ASP.NET Core app
-## ref: http://kubernetes.io/docs/user-guide/ingress/
+## ref: https://kubernetes.io/docs/user-guide/ingress/
 ##
 ingress:
   ## @param ingress.enabled Enable ingress record generation for ASP.NET Core
@@ -615,7 +615,11 @@ healthIngress:
   ## DEPRECATED: Use healthIngress.annotations instead of healthIngress.certManager
   ## certManager: false
   ##
-
+  ## @param healthIngress.ingressClassName IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)
+  ## This is supported in Kubernetes 1.18+ and required if you have more than one IngressClass marked as the default for your cluster .
+  ## ref: https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/
+  ##
+  ingressClassName: ""
   ## @param healthIngress.extraHosts n array with additional hostname(s) to be covered with the ingress record
   ## Most likely the hostname above will be enough, but in the event more hosts are needed, this is an array
   ## extraHosts:

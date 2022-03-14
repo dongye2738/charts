@@ -49,6 +49,12 @@ spec:
       {{- if .Values.repoServer.tolerations }}
       tolerations: {{- include "common.tplvalues.render" (dict "value" .Values.repoServer.tolerations "context" .) | nindent 8 }}
       {{- end }}
+      {{- if .Values.repoServer.schedulerName }}
+      schedulerName: {{ .Values.repoServer.schedulerName }}
+      {{- end }}
+      {{- if .Values.repoServer.topologySpreadConstraints }}
+      topologySpreadConstraints: {{- include "common.tplvalues.render" (dict "value" .Values.controller.topologySpreadConstraints "context" .) | nindent 8 }}
+      {{- end }}
       {{- if .Values.repoServer.priorityClassName }}
       priorityClassName: {{ .Values.repoServer.priorityClassName | quote }}
       {{- end }}
@@ -105,12 +111,14 @@ spec:
                 else
                     info "Connected to the Redis instance"
                 fi
+          {{- if include "argocd.redis.auth.enabled" . }}
           env:
             - name: REDISCLI_AUTH
               valueFrom:
                 secretKeyRef:
                   name: {{ include "argocd.redis.secretName" . }}
                   key: {{ include "argocd.redis.secretPasswordKey" . }}
+          {{- end }}
         {{- if .Values.repoServer.initContainers }}
           {{- include "common.tplvalues.render" (dict "value" .Values.repoServer.initContainers "context" $) | nindent 8 }}
         {{- end }}
@@ -176,6 +184,18 @@ spec:
           {{- if .Values.repoServer.resources }}
           resources: {{- toYaml .Values.repoServer.resources | nindent 12 }}
           {{- end }}
+          {{- if .Values.repoServer.startupProbe.enabled }}
+          startupProbe:
+            tcpSocket:
+              port: {{ .Values.repoServer.containerPorts.repoServer }}
+            initialDelaySeconds: {{ .Values.repoServer.startupProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.repoServer.startupProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.repoServer.startupProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.repoServer.startupProbe.successThreshold }}
+            failureThreshold: {{ .Values.repoServer.startupProbe.failureThreshold }}
+          {{- else if .Values.repoServer.customStartupProbe }}
+          startupProbe: {{- include "common.tplvalues.render" (dict "value" .Values.repoServer.customStartupProbe "context" $) | nindent 12 }}
+          {{- end }}
           {{- if .Values.repoServer.livenessProbe.enabled }}
           livenessProbe:
             tcpSocket:
@@ -198,7 +218,7 @@ spec:
             successThreshold: {{ .Values.repoServer.readinessProbe.successThreshold }}
             failureThreshold: {{ .Values.repoServer.readinessProbe.failureThreshold }}
           {{- else if .Values.repoServer.customReadinessProbe }}
-          readinessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .Values.repoServer.readinessProbe "enabled") "context" $) | nindent 12 }}
+          readinessProbe: {{- include "common.tplvalues.render" (dict "value" .Values.repoServer.customReadinessProbe "context" $) | nindent 12 }}
           {{- end }}
           volumeMounts:
             # Mounting into a path that will be read by Argo CD
